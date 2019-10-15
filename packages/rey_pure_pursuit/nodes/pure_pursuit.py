@@ -125,11 +125,11 @@ class PurePursuit():
                 total_white_lines = np.array([0.,0.])
                 total_yellow_lines = np.array([0.,0.])
                 for line in white_lines:
-                    total_white_lines += np.array(line[0])
-                    total_white_lines += np.array(line[1])
+                    total_white_lines[0] += np.array(line[0])
+                    total_white_lines[1] += np.array(line[1])
                 for line in yellow_lines:
-                    total_yellow_lines += np.array(line[0])
-                    total_yellow_lines += np.array(line[1])
+                    total_yellow_lines[0] += np.array(line[0])
+                    total_yellow_lines[1] += np.array(line[1])
                 mean_white = total_white_lines / float(len(white_lines))
                 mean_yellow = total_yellow_lines / float(len(yellow_lines))
                 follow_point = (mean_white + mean_yellow) / 2.
@@ -149,10 +149,10 @@ class PurePursuit():
             elif len(white_lines) > self.num_lines_th and len(yellow_lines) <= self.num_lines_th: # If only white lines
                 total_lines = np.array([0.,0.])
                 for line in white_lines:
-                    total_lines += np.array(line[0])
-                    total_lines += np.array(line[1])
+                    total_lines[0] += np.array(line[0])
+                    total_lines[1] += np.array(line[1])
                 follow_point = total_lines / (len(white_lines))
-                follow_point[1] += (self.offset*3.)
+                follow_point[1] += (self.offset*1.)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
@@ -169,8 +169,8 @@ class PurePursuit():
             elif len(yellow_lines) > self.num_lines_th and len(white_lines) <= self.num_lines_th: # If only yellow lines
                 total_lines = np.array([0.,0.])
                 for line in yellow_lines:
-                    total_lines += np.array(line[0])
-                    total_lines += np.array(line[1])
+                    total_lines[0] += np.array(line[0])
+                    total_lines[1] += np.array(line[1])
                 follow_point = total_lines / (len(yellow_lines))
                 follow_point[1] -= self.offset
                 duck_to_point = follow_point
