@@ -16,11 +16,11 @@ class PurePursuit():
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
-        self.line_sub = rospy.Subscriber('/bebek/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
+        self.line_sub = rospy.Subscriber('/default/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
         # self.lane_pose_sub = rospy.Subscriber('/default/lane_filter_node/lane_pose', LanePose, self.lane_pose_callback, queue_size = 1)
 
         # Add publisher(s)  # TODO: change topic name
-        self.car_cmd_pub = rospy.Publisher('/bebek/joy_mapper_node/car_cmd', Twist2DStamped, queue_size=1)
+        self.car_cmd_pub = rospy.Publisher('/default/joy_mapper_node/car_cmd', Twist2DStamped, queue_size=1)
 
 
         # To store subscribed data
@@ -125,8 +125,8 @@ class PurePursuit():
                 total_white_lines = np.array([0.,0.])
                 total_yellow_lines = np.array([0.,0.])
                 for line in white_lines:
-                    total_white_lines[0] += np.array(line[0])
-                    total_white_lines[1] += np.array(line[1])
+                    total_white_lines += np.array(line[0])
+                    total_white_lines += np.array(line[1])
                 for line in yellow_lines:
                     total_yellow_lines[0] += np.array(line[0])
                     total_yellow_lines[1] += np.array(line[1])
@@ -149,8 +149,8 @@ class PurePursuit():
             elif len(white_lines) > self.num_lines_th and len(yellow_lines) <= self.num_lines_th: # If only white lines
                 total_lines = np.array([0.,0.])
                 for line in white_lines:
-                    total_lines[0] += np.array(line[0])
-                    total_lines[1] += np.array(line[1])
+                    total_lines += np.array(line[0])
+                    total_lines += np.array(line[1])
                 follow_point = total_lines / (len(white_lines))
                 follow_point[1] += (self.offset*1.)
                 duck_to_point = follow_point
@@ -169,8 +169,8 @@ class PurePursuit():
             elif len(yellow_lines) > self.num_lines_th and len(white_lines) <= self.num_lines_th: # If only yellow lines
                 total_lines = np.array([0.,0.])
                 for line in yellow_lines:
-                    total_lines[0] += np.array(line[0])
-                    total_lines[1] += np.array(line[1])
+                    total_lines += np.array(line[0])
+                    total_lines += np.array(line[1])
                 follow_point = total_lines / (len(yellow_lines))
                 follow_point[1] -= self.offset
                 duck_to_point = follow_point
