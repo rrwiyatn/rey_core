@@ -132,7 +132,6 @@ class PurePursuit():
                     total_yellow_lines += np.array(line[1])
                 mean_white = total_white_lines / float(len(white_lines))
                 mean_yellow = total_yellow_lines / float(len(yellow_lines))
-
                 follow_point = (mean_white + mean_yellow) / 2.
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
@@ -152,8 +151,8 @@ class PurePursuit():
                 for line in white_lines:
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
-                follow_point = total_lines / (len(lines))
-                follow_point[1] += (self.offset*2.)
+                follow_point = total_lines / (len(white_lines))
+                follow_point[1] += (self.offset*3.)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
@@ -188,11 +187,11 @@ class PurePursuit():
                 self.last_omega = omega
                 self.last_v = v
             else:
-                omega = -1.0
+                omega = 1.0
                 v = 0.0
                 # print('whoops')
         else:
-            omega = -1.0
+            omega = 1.0
             v = 0.0
             # print('yeeha')
 
