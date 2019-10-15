@@ -9,7 +9,7 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.1
+        self.K = 0.25
         self.num_lines_th = 2
         self.offset = 0.5
         
