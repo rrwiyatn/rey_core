@@ -9,10 +9,10 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.2
+        self.K = 0.4
         self.num_lines_th = 2
         self.offset = 0.5
-        self.v = 0.3
+        self.v = 0.5
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
@@ -99,6 +99,7 @@ class PurePursuit():
             color = linesegs[i].color
             lines.append([pt1,pt2,color])
 
+        '''Separate white and yellow lines for convenience'''
         if len(lines) > self.num_lines_th: # If lines are detected, separate white and yellow lines
             white_lines = []
             yellow_lines = []
@@ -121,68 +122,79 @@ class PurePursuit():
         '''Method 1: assume the centroid of all line points to be the follow point'''
         if len(lines) > self.num_lines_th: # If lines are detected
             if len(white_lines) > self.num_lines_th and len(yellow_lines) > self.num_lines_th: # If both white and yellow exist
-                total_lines = np.array([0.,0.])
-                for line in lines:
-                    total_lines += np.array(line[0])
-                    total_lines += np.array(line[1])
-                follow_point = total_lines / (len(lines) * 2.)
+                total_white_lines = np.array([0.,0.])
+                total_yellow_lines = np.array([0.,0.])
+                for line in white_lines:
+                    total_white_lines += np.array(line[0])
+                    total_white_lines += np.array(line[1])
+                for line in yellow_lines:
+                    total_yellow_lines += np.array(line[0])
+                    total_yellow_lines += np.array(line[1])
+                mean_white = total_white_lines / float(len(white_lines))
+                mean_yellow = total_yellow_lines / float(len(yellow_lines))
+
+                follow_point = (mean_white + mean_yellow) / 2.
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
                 z_comp = duck_to_point[1]
                 x_comp = duck_to_point[0]
-                angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
-                alpha = angle_between_x_axis_and_target
-                omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
+                # angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
+                # alpha = angle_between_x_axis_and_target
+                # omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
+                sin_alpha = z_comp / dist
+                omega = sin_alpha / self.K
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
-                # omega = -1.0
-                # v = 0.0
             elif len(white_lines) > self.num_lines_th and len(yellow_lines) <= self.num_lines_th: # If only white lines
                 total_lines = np.array([0.,0.])
                 for line in white_lines:
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
-                follow_point = total_lines / (len(lines) * 2.)
-                follow_point[1] -= self.offset
+                follow_point = total_lines / (len(lines))
+                follow_point[1] += (self.offset*4.)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
                 z_comp = duck_to_point[1]
                 x_comp = duck_to_point[0]
-                angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
-                alpha = angle_between_x_axis_and_target
-                omega = (np.sin(alpha)) / (self.K) # Scaling dist with speed
+                # angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
+                # alpha = angle_between_x_axis_and_target
+                # omega = (np.sin(alpha)) / (self.K) # Scaling dist with speed
+                sin_alpha = z_comp / dist
+                omega = sin_alpha / self.K
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
-            elif len(yellow_lines) > self.num_lines_th and len(white_lines) <= self.num_lines_th: # If only yellow
+            elif len(yellow_lines) > self.num_lines_th and len(white_lines) <= self.num_lines_th: # If only yellow lines
                 total_lines = np.array([0.,0.])
                 for line in yellow_lines:
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
-                follow_point = total_lines / (len(yellow_lines) * 2.)
+                follow_point = total_lines / (len(yellow_lines))
                 follow_point[1] -= self.offset
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
                 z_comp = duck_to_point[1]
                 x_comp = duck_to_point[0]
-                angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
-                alpha = angle_between_x_axis_and_target
-                omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
+                #angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
+                #alpha = angle_between_x_axis_and_target
+                #omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
+                sin_alpha = z_comp / dist
+                omega = sin_alpha / self.K
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
             else:
                 omega = -1.0
                 v = 0.0
-                print('whoops')
+                # print('whoops')
         else:
             omega = -1.0
             v = 0.0
-            print('yeeha')
+            # print('yeeha')
 
         # Publish the command
         car_cmd_msg = Twist2DStamped()
