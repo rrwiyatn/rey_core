@@ -20,6 +20,6 @@
 		<!-- <arg name="/lane_following/lane_controller" default="false"/> -->
 	</include>
 
-	<!-- <node pkg="rey_pure_pursuit" type="pure_pursuit.py" name="pure_pursuit" output="screen" required="true"></node> -->
+	<node pkg="rey_pure_pursuit" type="pure_pursuit.py" name="pure_pursuit" output="screen" required="true"></node>
 
 </launch>
