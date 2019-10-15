@@ -9,7 +9,7 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.3
+        self.K = 0.1
         self.num_lines_th = 2
         self.offset = 0.5
         
@@ -133,7 +133,7 @@ class PurePursuit():
                 angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
                 alpha = angle_between_x_axis_and_target
                 omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
-                v = 0.5
+                v = 0.4
                 self.last_omega = omega
                 self.last_v = v
                 # omega = -1.0
@@ -153,7 +153,7 @@ class PurePursuit():
                 angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
                 alpha = angle_between_x_axis_and_target
                 omega = (np.sin(alpha)) / (self.K) # Scaling dist with speed
-                v = 0.5
+                v = 0.4
                 self.last_omega = omega
                 self.last_v = v
             elif len(yellow_lines) > self.num_lines_th and len(white_lines) <= self.num_lines_th: # If only yellow
@@ -171,7 +171,7 @@ class PurePursuit():
                 angle_between_x_axis_and_target = np.arctan2(-z_comp,x_comp)
                 alpha = angle_between_x_axis_and_target
                 omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
-                v = 0.5
+                v = 0.4
                 self.last_omega = omega
                 self.last_v = v
             else:
