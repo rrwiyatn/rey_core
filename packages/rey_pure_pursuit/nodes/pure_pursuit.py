@@ -9,7 +9,7 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.2
+        self.K = 0.3
         self.num_lines_th = 2
         self.offset = 0.5
         self.v = 0.5
@@ -187,11 +187,11 @@ class PurePursuit():
                 self.last_omega = omega
                 self.last_v = v
             else:
-                omega = 1.0
+                omega = -1.0
                 v = 0.0
                 # print('whoops')
         else:
-            omega = 1.0
+            omega = -1.0
             v = 0.0
             # print('yeeha')
 
