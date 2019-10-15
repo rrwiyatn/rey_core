@@ -9,7 +9,7 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.4
+        self.K = 0.2
         self.num_lines_th = 2
         self.offset = 0.5
         self.v = 0.5
@@ -153,7 +153,7 @@ class PurePursuit():
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
                 follow_point = total_lines / (len(lines))
-                follow_point[1] += (self.offset*4.)
+                follow_point[1] += (self.offset*2.)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
