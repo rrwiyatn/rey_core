@@ -9,11 +9,11 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K_white = 0.22 # 0.15 - 0.1
+        self.K_white = 0.21 # 0.15 - 0.1
         self.K_yellow = 0.16 # 0.3 - 0.3
         self.num_lines_th = 2 # 2
-        self.offset_white = 0.55 # 0.7 - 1.1 
-        self.offset_yellow = 0.6 # 0.3 - 0.15
+        self.offset_white = 0.5 # 0.7 - 1.1 
+        self.offset_yellow = 0.5 # 0.3 - 0.15
         self.v = 0.25 # 0.3 - 0.5
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
