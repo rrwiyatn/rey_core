@@ -214,17 +214,15 @@ class PurePursuit():
                 self.last_omega = omega
                 self.last_v = v
             else:
-                omega = -0.0
+                omega = -0.0 # -1.0
                 v = 0.1
-                # print('whoops')
         else:
-            omega = -0.0
+            omega = -0.0 # -1.0
             v = 0.1
-            # print('yeeha')
 
         # Publish the command
         car_cmd_msg = Twist2DStamped()
-        car_cmd_msg.header = data.header # TODO: copy from whatever we subscribe from
+        car_cmd_msg.header = data.header
         car_cmd_msg.v = v
         car_cmd_msg.omega = omega
         self.car_cmd_pub.publish(car_cmd_msg)
