@@ -9,28 +9,20 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K_white = 0.21 # 0.15 - 0.1
-        self.K_yellow = 0.16 # 0.3 - 0.3
+        self.K_white = 0.21 # 0.15 - 0.1 - 0.21
+        self.K_yellow = 0.16 # 0.3 - 0.3 - 0.16
         self.num_lines_th = 2 # 2
-        self.offset_white = 0.5 # 0.7 - 1.1 
-        self.offset_yellow = 0.5 # 0.3 - 0.15
-        self.v = 0.25 # 0.3 - 0.5
+        self.offset_white = 0.5 # 0.7 - 1.1 - 0.5
+        self.offset_yellow = 0.5 # 0.3 - 0.15 - 0.5
+        self.v = 0.25 # 0.3 - 0.5 - 0.25
         
-        # Add subscriber(s) # TODO: change topic name, message type, callback name
+        # Add subscriber(s)
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
         self.line_sub = rospy.Subscriber('/bebek/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
         self.lane_pose_sub = rospy.Subscriber('/bebek/lane_filter_node/lane_pose', LanePose, self.lane_pose_callback, queue_size = 1)
 
-        # Add publisher(s)  # TODO: change topic name
+        # Add publisher(s)
         self.car_cmd_pub = rospy.Publisher('/bebek/joy_mapper_node/car_cmd', Twist2DStamped, queue_size=1)
-
-
-        # To store subscribed data
-        # self.lines = []
-        # self.d = None
-        # self.phi = None
-        # self.req_line = False
-        # self.req_pose = False
 
         # To store some useful history
         self.last_omega = 0
@@ -64,58 +56,7 @@ class PurePursuit():
         self.f.write(str_dump)
 
 
-    def wrap_angle(self, angle):
-        new_angle = angle % (np.pi * 2)
-        if new_angle < 0:
-            new_angle = new_angle + (2 * np.pi)
-        elif new_angle >= np.pi:
-            new_angle = new_angle - (2 * np.pi)
-        return new_angle
-    
-
-    # def line_sub_callback(self, data):
-    #     if self.req_line:
-    #         self.lines = ...
-    #     self.req_line = False
-
-    
-    # def lane_pose_sub_callback(self, data):
-    #     if self.req_pose:
-    #         self.d = 
-    #         self.phi = 
-    #     self.req_pose = False
-
-    
-    # def request_lines(self):
-    #     self.req_line = True
-    #     while self.req_line and not rospy.is_shutdown():
-    #         time.sleep(0.001)
-    #     self.req_line = True
-    #     while self.req_line and not rospy.is_shutdown():
-    #         time.sleep(0.001)
-    #     return self.lines
-
-
-    # def request_lane_pose(self):
-    #     self.req_pose = True
-    #     while self.req_pose and not rospy.is_shutdown():
-    #         time.sleep(0.001)
-    #     self.req_pose = True
-    #     while self.req_pose and not rospy.is_shutdown():
-    #         time.sleep(0.001)
-    #     return self.d, self.phi
-
-
-    def pure_pursuit_callback(self, data):
-        # Return the angular velocity in order to control the Duckiebot using a pure pursuit algorithm.
-        # Parameters:
-        #     env: Duckietown simulator
-        #     pos: global position of the Duckiebot
-        #     angle: global angle of the Duckiebot
-        # Outputs:
-        #     v: linear veloicy in m/s.
-        #     omega: angular velocity, in rad/sec. Right is negative, left is positive.
-        
+    def pure_pursuit_callback(self, data):        
 
         '''Get line segments'''
         linesegs = data.segments # A list of line segments
@@ -136,14 +77,8 @@ class PurePursuit():
                     white_lines.append([line[0],line[1]])
                 elif line[2] == 1: # If color is yellow
                     yellow_lines.append([line[0],line[1]])
-            # white_slope = 0
-            # yellow_slope = 0
-            # for line in white_lines:
-            #     white_slope += (line[1] - line[0])
-            # white_slope_sign = white_slope[1]/white_slope[0]
-            
-            print('white_lines: %d' % len(white_lines))
-            print('yellow_lines: %d' % len(yellow_lines))
+            # print('white_lines: %d' % len(white_lines))
+            # print('yellow_lines: %d' % len(yellow_lines))
 
         
         '''Method 1: assume the centroid of all line points to be the follow point'''
@@ -220,15 +155,14 @@ class PurePursuit():
             omega = 0. # -1.0
             v = 0.15
 
-        # Publish the command
+        '''Publish the command'''
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header = data.header
         car_cmd_msg.v = v
         car_cmd_msg.omega = omega
         self.car_cmd_pub.publish(car_cmd_msg)
         
-
-        # Dump
+        '''Dump command log data'''
         v_str = str(v)
         w_str = str(omega)
         str_dump = v_str + ',' + w_str + '\n'
@@ -236,11 +170,9 @@ class PurePursuit():
 
         return 
 
+
     def spin(self):
         rospy.spin()
-
-
-# def main():
 
 
 if __name__ == '__main__':
