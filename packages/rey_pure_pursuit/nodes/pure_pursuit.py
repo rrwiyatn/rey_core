@@ -38,6 +38,7 @@ class PurePursuit():
 
         # LOG
         self.plot_data = []
+        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump.txt","w+")
 
         rospy.loginfo('Initialized.')
 
@@ -60,8 +61,7 @@ class PurePursuit():
         phi_ref = str(phi_ref)
         sigma_phi = str(sigma_phi)
         str_dump = d + ',' + d_ref + ',' + sigma_d + ',' + phi + ',' + phi_ref + ',' + sigma_phi + '\n'
-        with open("dump.txt", "a") as myfile:
-            myfile.write(str_dump)
+        self.f.write(str_dump)
 
 
     def wrap_angle(self, angle):
