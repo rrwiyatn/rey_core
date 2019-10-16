@@ -38,7 +38,7 @@ class PurePursuit():
 
         # LOG
         self.plot_data = []
-        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump4.txt","w+")
+        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump5.txt","w+")
 
         rospy.loginfo('Initialized.')
 
