@@ -9,12 +9,12 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K_white = 0.1 # 0.15
-        self.K_yellow = 0.3 # 0.3
+        self.K_white = 0.2 # 0.15 - 0.1
+        self.K_yellow = 0.4 # 0.3 - 0.3
         self.num_lines_th = 2 # 2
-        self.offset_white = 1.1 # 0.7
-        self.offset_yellow = 0.15 # 0.3
-        self.v = 0.5 # 0.4
+        self.offset_white = 1.1 # 0.7 - 1.1 
+        self.offset_yellow = 0.15 # 0.3 - 0.15
+        self.v = 0.5 # 0.3 - 0.5
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
@@ -38,7 +38,7 @@ class PurePursuit():
 
         # LOG
         self.plot_data = []
-        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump.txt","w+")
+        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump2.txt","w+")
 
         rospy.loginfo('Initialized.')
 
@@ -215,11 +215,11 @@ class PurePursuit():
                 self.last_v = v
             else:
                 omega = -1.0
-                v = 0.0
+                v = 0.1
                 # print('whoops')
         else:
             omega = -1.0
-            v = 0.0
+            v = 0.1
             # print('yeeha')
 
         # Publish the command
