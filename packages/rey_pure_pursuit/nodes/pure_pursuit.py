@@ -19,7 +19,7 @@ class PurePursuit():
         # Add subscriber(s) # TODO: change topic name, message type, callback name
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
         self.line_sub = rospy.Subscriber('/bebek/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
-        # self.lane_pose_sub = rospy.Subscriber('/default/lane_filter_node/lane_pose', LanePose, self.lane_pose_callback, queue_size = 1)
+        self.lane_pose_sub = rospy.Subscriber('/default/lane_filter_node/lane_pose', LanePose, self.lane_pose_callback, queue_size = 1)
 
         # Add publisher(s)  # TODO: change topic name
         self.car_cmd_pub = rospy.Publisher('/bebek/joy_mapper_node/car_cmd', Twist2DStamped, queue_size=1)
@@ -36,7 +36,32 @@ class PurePursuit():
         self.last_omega = 0
         self.last_v = 0
 
+        # LOG
+        self.plot_data = []
+
         rospy.loginfo('Initialized.')
+
+
+    def lane_pose_callback(self, data):
+        d = data.d
+        d_ref = data.d_ref
+        sigma_d = data.sigma_d
+        phi = data.phi
+        phi_ref = data.phi_ref
+        sigma_phi = data.sigma_phi
+        dump = [d,d_ref,sigma_d,phi,phi_ref,sigma_phi]
+        self.plot_data.append(dump)
+
+        # STRING
+        d = str(d)
+        d_ref = str(d_ref)
+        sigma_d = str(sigma_d)
+        phi = str(phi)
+        phi_ref = str(phi_ref)
+        sigma_phi = str(sigma_phi)
+        str_dump = d + ',' + d_ref + ',' + sigma_d + ',' + phi + ',' + phi_ref + ',' + sigma_phi + '\n'
+        with open("dump.txt", "a") as myfile:
+            myfile.write(str_dump)
 
 
     def wrap_angle(self, angle):
