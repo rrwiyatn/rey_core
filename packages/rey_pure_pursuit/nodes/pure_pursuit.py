@@ -9,9 +9,11 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.22
+        self.K_white = 0.15
+        self.K_yellow = 0.3
         self.num_lines_th = 2
-        self.offset = 0.7
+        self.offset_white = 0.7
+        self.offset_yellow = 0.3
         self.v = 0.3
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
@@ -152,7 +154,7 @@ class PurePursuit():
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
                 follow_point = total_lines / (len(white_lines))
-                follow_point[1] += (self.offset*2.)
+                follow_point[1] += (self.offset_white)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
@@ -162,7 +164,7 @@ class PurePursuit():
                 # alpha = angle_between_x_axis_and_target
                 # omega = (np.sin(alpha)) / (self.K) # Scaling dist with speed
                 sin_alpha = z_comp / dist
-                omega = sin_alpha / (self.K * 0.9)
+                omega = sin_alpha / (self.K_white)
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
@@ -172,7 +174,7 @@ class PurePursuit():
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
                 follow_point = total_lines / (len(yellow_lines))
-                follow_point[1] -= (self.offset - 0.2)
+                follow_point[1] -= (self.offset_yellow)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
@@ -182,7 +184,7 @@ class PurePursuit():
                 #alpha = angle_between_x_axis_and_target
                 #omega = -(np.sin(alpha)) / (self.K) # Scaling dist with speed
                 sin_alpha = z_comp / dist
-                omega = sin_alpha / self.K
+                omega = sin_alpha / self.K_yellow
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
