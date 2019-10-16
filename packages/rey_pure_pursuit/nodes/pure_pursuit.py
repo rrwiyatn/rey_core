@@ -12,7 +12,7 @@ class PurePursuit():
         self.K_white = 0.3 # 0.15 - 0.1
         self.K_yellow = 0.4 # 0.3 - 0.3
         self.num_lines_th = 2 # 2
-        self.offset_white = 0.5 # 0.7 - 1.1 
+        self.offset_white = 1.1 # 0.7 - 1.1 
         self.offset_yellow = 0.3 # 0.3 - 0.15
         self.v = 0.4 # 0.3 - 0.5
         
