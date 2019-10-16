@@ -214,11 +214,11 @@ class PurePursuit():
                 self.last_omega = omega
                 self.last_v = v
             else:
-                omega = -1.0
+                omega = -0.0
                 v = 0.1
                 # print('whoops')
         else:
-            omega = -1.0
+            omega = -0.0
             v = 0.1
             # print('yeeha')
 
