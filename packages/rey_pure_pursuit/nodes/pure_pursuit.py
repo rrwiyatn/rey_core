@@ -38,8 +38,8 @@ class PurePursuit():
 
         # LOG
         self.plot_data = []
-        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump5.txt","w+")
-
+        self.f = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump6_pose.txt","w+")
+        self.t = open("/code/catkin_ws/src/rey_core/packages/rey_pure_pursuit/dump6_cmd.txt","w+")
         rospy.loginfo('Initialized.')
 
 
@@ -226,6 +226,13 @@ class PurePursuit():
         car_cmd_msg.v = v
         car_cmd_msg.omega = omega
         self.car_cmd_pub.publish(car_cmd_msg)
+        
+
+        # Dump
+        v_str = str(v)
+        w_str = str(omega)
+        str_dump = v_str + ',' + w_str + '\n'
+        self.t.write(str_dump)
 
         return 
 
