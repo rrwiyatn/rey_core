@@ -152,7 +152,7 @@ class PurePursuit():
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
                 follow_point = total_lines / (len(white_lines))
-                follow_point[1] += (self.offset*1.)
+                follow_point[1] += (self.offset*2.)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
@@ -162,7 +162,7 @@ class PurePursuit():
                 # alpha = angle_between_x_axis_and_target
                 # omega = (np.sin(alpha)) / (self.K) # Scaling dist with speed
                 sin_alpha = z_comp / dist
-                omega = sin_alpha / self.K
+                omega = sin_alpha / (self.K * 0.9)
                 v = self.v
                 self.last_omega = omega
                 self.last_v = v
@@ -172,7 +172,7 @@ class PurePursuit():
                     total_lines += np.array(line[0])
                     total_lines += np.array(line[1])
                 follow_point = total_lines / (len(yellow_lines))
-                follow_point[1] -= self.offset
+                follow_point[1] -= (self.offset - 0.2)
                 duck_to_point = follow_point
                 dist = np.linalg.norm(duck_to_point) # a scalar
                 unit_duck_to_point = duck_to_point / dist # (x,y,z)
