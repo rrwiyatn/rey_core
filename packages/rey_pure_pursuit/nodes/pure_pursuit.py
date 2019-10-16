@@ -9,10 +9,10 @@ class PurePursuit():
 
         rospy.init_node('pure_pursuit_node', anonymous=True)
 
-        self.K = 0.3
+        self.K = 0.22
         self.num_lines_th = 2
-        self.offset = 0.5
-        self.v = 0.1
+        self.offset = 0.3
+        self.v = 1.0
         
         # Add subscriber(s) # TODO: change topic name, message type, callback name
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
