@@ -11,16 +11,16 @@ class PurePursuit():
 
         # FOR PURE PURSUIT
         self.K = 0.8
-        self.K_white = 0.153 # 0.13 (best in submission (4641): 0.25) (best but sketchy (4642): 0.27)
-        self.K_yellow = 0.112 # 0.13 (best in submission (4641): 0.25) (best but sketchy (4642): 0.27)
+        self.K_white = 0.155 # 0.13 (best in submission (4641): 0.25) (best but sketchy (4642): 0.27)
+        self.K_yellow = 0.114 # 0.13 (best in submission (4641): 0.25) (best but sketchy (4642): 0.27)
         self.num_lines_th = 0 # 2 (best in submission (4641): 0)
         self.offset_white = 0.31 # 0.3 (best in submission (4641): 0.5) (best but sketchy (4642): 0.4)
         self.offset_yellow = 0.31 # 0.3 (best in submission (4641): 0.5) (best but sketchy (4642): 0.4)
-        self.v = 0.3 # 5.0 (best in submission (4641): 1.) (best but sketchy (4642): 1.)
+        self.v = 0.15 # 5.0 (best in submission (4641): 1.) (best but sketchy (4642): 1.)
         self.v_min = 0.0 # min velocity (best in submission: 0.0)
-        self.v_max = 0.9 # max velocity # 20 (best in submission (4641): 10.0) (best but sketchy (4642): 10.0)
-        self.v_factor = 7.0 # to adjust v according to omega (v inversely proportional) (best in submission (4641): 2.5) (best but sketchy (4642): 2.5)
-        self.x_comp_max = 0.325
+        self.v_max = 0.7 # max velocity # 20 (best in submission (4641): 10.0) (best but sketchy (4642): 10.0)
+        self.v_factor = 6.5 # to adjust v according to omega (v inversely proportional) (best in submission (4641): 2.5) (best but sketchy (4642): 2.5)
+        self.x_comp_max = 0.35
         self.w_factor = 3.0
         
         # Add subscriber(s)
