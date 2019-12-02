@@ -25,12 +25,12 @@ class PurePursuit():
         
         # Add subscriber(s)
         # self.line_sub = rospy.Subscriber('/default/ground_projection/lineseglist_out', SegmentList, self.pure_pursuit_callback, queue_size = 1)
-        self.line_sub = rospy.Subscriber('/default/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
+        self.line_sub = rospy.Subscriber('/bebek/lane_filter_node/seglist_filtered', SegmentList, self.pure_pursuit_callback, queue_size = 1)
         # self.lane_pose_sub = rospy.Subscriber('/bebek/lane_filter_node/lane_pose', LanePose, self.lane_pose_callback, queue_size = 1)
 
         # Add publisher(s)
         # self.car_cmd_pub = rospy.Publisher('/default/joy_mapper_node/car_cmd', Twist2DStamped, queue_size=1)
-        self.car_cmd_pub = rospy.Publisher('/default/lane_controller_node/car_cmd', Twist2DStamped, queue_size=1)
+        self.car_cmd_pub = rospy.Publisher('/bebek/lane_controller_node/car_cmd', Twist2DStamped, queue_size=1)
         
         # To store some useful history
         self.last_omega = 0
