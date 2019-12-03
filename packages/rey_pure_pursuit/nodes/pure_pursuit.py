@@ -18,8 +18,8 @@ class PurePursuit():
         self.offset_yellow = 0.31 # 0.3 (best in submission (4641): 0.5) (best but sketchy (4642): 0.4)
         self.v = 0.15 # 5.0 (best in submission (4641): 1.) (best but sketchy (4642): 1.)
         self.v_min = 0.0 # min velocity (best in submission: 0.0)
-        self.v_max = 0.65 # max velocity # 20 (best in submission (4641): 10.0) (best but sketchy (4642): 10.0)
-        self.v_factor = 6.5 # to adjust v according to omega (v inversely proportional) (best in submission (4641): 2.5) (best but sketchy (4642): 2.5)
+        self.v_max = 0.7 # max velocity # 20 (best in submission (4641): 10.0) (best but sketchy (4642): 10.0)
+        self.v_factor = 6.0 # to adjust v according to omega (v inversely proportional) (best in submission (4641): 2.5) (best but sketchy (4642): 2.5)
         self.x_comp_max = 0.325
         self.w_factor = 3.0
         
